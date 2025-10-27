@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Pumpkin 🎃</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2, #80deea);
+            color: #5a3e36;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            color: #d64d7e;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #8a5a44;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .paper {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .letter-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: center;
+        }
+        
+        .letter-content p {
+            margin-bottom: 25px;
+        }
+        
+        .highlight {
+            color: #d64d7e;
+            font-weight: 600;
+        }
+        
+        .interactive-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 50px 0;
+        }
+        
+        .jar-scene {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            margin: 30px 0;
+        }
+        
+        .jar {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 280px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50% 50% 40% 40%;
+            border: 8px solid #d64d7e;
+            box-shadow: 
+                inset 0 0 30px rgba(255, 255, 255, 0.8),
+                0 10px 20px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+            overflow: hidden;
+        }
+        
+        .jar-lid {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 30px;
+            background: #d64d7e;
+            border-radius: 10px;
+            z-index: 3;
+            transition: transform 1.5s ease;
+        }
+        
+        .jar-lid.open {
+            transform: translateX(-50%) translateY(-100px) rotate(-10deg);
+        }
+        
+        .butterfly {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            z-index: 1;
+            animation: floatInJar 3s infinite alternate ease-in-out;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+        }
+        
+        .free-butterfly {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-size: 40px;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .free-butterfly.flying {
+            opacity: 1;
+            animation: flyAround 8s linear forwards;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #d64d7e, #ff7aa2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(214, 77, 126, 0.3);
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(214, 77, 126, 0.4);
+        }
+        
+        .response {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 1.4rem;
+            color: #d64d7e;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .response.show {
+            opacity: 1;
+        }
+        
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .floating-heart {
+            position: absolute;
+            font-size: 24px;
+            color: rgba(214, 77, 126, 0.7);
+            animation: floatUp 8s linear forwards;
+        }
+        
+        @keyframes floatInJar {
+            0% {
+                transform: translate(-50%, -50%) translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translate(-50%, -50%) translateY(-20px) rotate(5deg);
+            }
+            50% {
+                transform: translate(-50%, -50%) translateX(10px) translateY(-10px) rotate(-5deg);
+            }
+            75% {
+                transform: translate(-50%, -50%) translateX(-10px) translateY(-15px) rotate(3deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) translateY(-5px) rotate(-2deg);
+            }
+        }
+        
+        @keyframes flyAround {
+            0% {
+                top: 50%;
+                left: 50%;
+                transform: scale(1) rotate(0deg);
+            }
+            10% {
+                top: 40%;
+                left: 60%;
+                transform: scale(1.1) rotate(10deg);
+            }
+            20% {
+                top: 30%;
+                left: 40%;
+                transform: scale(1.2) rotate(-5deg);
+            }
+            30% {
+                top: 20%;
+                left: 70%;
+                transform: scale(1.3) rotate(15deg);
+            }
+            40% {
+                top: 10%;
+                left: 30%;
+                transform: scale(1.4) rotate(-10deg);
+            }
+            50% {
+                top: 5%;
+                left: 80%;
+                transform: scale(1.5) rotate(20deg);
+            }
+            60% {
+                top: 15%;
+                left: 20%;
+                transform: scale(1.4) rotate(-15deg);
+            }
+            70% {
+                top: 25%;
+                left: 90%;
+                transform: scale(1.3) rotate(10deg);
+            }
+            80% {
+                top: 35%;
+                left: 10%;
+                transform: scale(1.2) rotate(-20deg);
+            }
+            90% {
+                top: 45%;
+                left: 95%;
+                transform: scale(1.1) rotate(5deg);
+            }
+            100% {
+                top: 50%;
+                left: 50%;
+                transform: scale(1) rotate(0deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .cute-message {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-style: italic;
+            border-left: 5px solid #d64d7e;
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .message-bubble {
+            position: absolute;
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+            max-width: 200px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 10;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .message-bubble.show {
+            opacity: 1;
+        }
+        
+        .message-bubble::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: white;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .paper {
+                padding: 25px;
+            }
+            
+            .letter-content {
+                font-size: 1.1rem;
+            }
+            
+            .jar-scene {
+                width: 250px;
+                height: 350px;
+            }
+            
+            .jar {
+                width: 180px;
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>My Dear Pumpkin 🎃</h1>
+            <p class="subtitle">Please set my heart free...</p>
+        </div>
+        
+        <div class="cute-message">
+            "My love for you is like this butterfly - beautiful but trapped without you"
+        </div>
+        
+        <div class="paper">
+            <div class="letter-content">
+                <p>Meri pyari <span class="highlight">Pranju</span>,</p>
+                
+                <p>My heart feels like this butterfly - trapped and waiting to be free.</p>
+                
+                <p>I know I made a mistake, and I'm truly sorry.</p>
+                
+                <p>You are the sunshine that makes my world bright.</p>
+                
+                <p>Please set my heart free by unblocking me.</p>
+                
+                <p>I promise to always cherish you.</p>
+            </div>
+        </div>
+        
+        <div class="interactive-section">
+            <h2 style="color: #d64d7e; margin-bottom: 20px; text-align: center;">Set the butterfly free to show your heart 💖</h2>
+            
+            <div class="jar-scene">
+                <div class="jar">
+                    <div class="butterfly" id="trappedButterfly">🦋</div>
+                </div>
+                <div class="jar-lid" id="jarLid"></div>
+                <div class="free-butterfly" id="freeButterfly">🦋</div>
+                <div class="message-bubble" id="messageBubble">I'm sorry! Please unblock me 💕</div>
+            </div>
+            
+            <button class="btn" id="releaseBtn">Release The Butterfly 🦋</button>
+            
+            <div class="response" id="responseMessage">
+                <!-- Response will appear here -->
+            </div>
+        </div>
+        
+        <div class="cute-message">
+            "Your love sets my heart free to fly"
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createFloatingHearts() {
+            const floatingHearts = document.getElementById('floatingHearts');
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                heart.innerHTML = '💖';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                
+                floatingHearts.appendChild(heart);
+                
+                // Remove heart after animation completes
+                setTimeout(() => {
+                    heart.remove();
+                }, 12000);
+            }, 1000);
+        }
+        
+        // Release butterfly interaction
+        const releaseBtn = document.getElementById('releaseBtn');
+        const jarLid = document.getElementById('jarLid');
+        const trappedButterfly = document.getElementById('trappedButterfly');
+        const freeButterfly = document.getElementById('freeButterfly');
+        const messageBubble = document.getElementById('messageBubble');
+        const responseMessage = document.getElementById('responseMessage');
+        
+        releaseBtn.addEventListener('click', () => {
+            // Open the jar lid
+            jarLid.classList.add('open');
+            
+            // Hide the trapped butterfly
+            setTimeout(() => {
+                trappedButterfly.style.opacity = '0';
+                
+                // Show the free butterfly and make it fly
+                setTimeout(() => {
+                    freeButterfly.classList.add('flying');
+                    
+                    // Show message bubble
+                    setTimeout(() => {
+                        messageBubble.classList.add('show');
+                    }, 1000);
+                    
+                    // Show response message after butterfly flies
+                    setTimeout(() => {
+                        responseMessage.innerHTML = `
+                            Thank you meri pyari Pumpkin! 💕<br><br>
+                            You've set my heart free to love you again.<br>
+                            I promise to always make you happy!<br><br>
+                            <span style="color:#8a5a44; font-size:1.2rem;">You are my sunshine</span>
+                        `;
+                        responseMessage.classList.add('show');
+                        
+                        // Create multiple heart bursts
+                        createHeartBurst();
+                        setTimeout(createHeartBurst, 500);
+                        setTimeout(createHeartBurst, 1000);
+                        
+                        // Change button text
+                        releaseBtn.textContent = "Thank You My Love! 💖";
+                        releaseBtn.style.background = "linear-gradient(to right, #4CAF50, #45a049)";
+                    }, 8000);
+                }, 500);
+            }, 1000);
+        });
+        
+        // Create heart burst animation
+        function createHeartBurst() {
+            const floatingHearts = document.getElementById('floatingHearts');
+            const heartCount = 10;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                heart.innerHTML = '💖';
+                heart.style.left = '50%';
+                heart.style.top = '50%';
+                heart.style.fontSize = '20px';
+                heart.style.animationDuration = '3s';
+                
+                floatingHearts.appendChild(heart);
+                
+                // Remove heart after animation completes
+                setTimeout(() => {
+                    heart.remove();
+                }, 3000);
+            }
+        }
+        
+        // Initialize the page
+        window.onload = function() {
+            createFloatingHearts();
+        };
+    </script>
+</body>
+</html>
